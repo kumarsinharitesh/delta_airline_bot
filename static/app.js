@@ -162,49 +162,38 @@ function buildInteractionGroup(customerText, data, attachment) {
         <div class="bubble-text">${esc(customerText)}</div>
         ${attHtml}
       </div>
+      <div class="customer-avatar" title="You (Customer)">👤</div>
     </div>`;
 
-  // ── 2. RESPONSE section ──
+  // ── 2. RESPONSE section with Delta Agent Figure ──
   const replyText = data.reply || '(No reply generated)';
-
-  // Header label
-  let responseHeaderHtml;
-  if (isEscalate) {
-    responseHeaderHtml = `
-      <div class="response-header">
-        <span class="response-label draft-label">Draft Response</span>
-      </div>
-      <div class="draft-banner">
-        <span class="draft-banner-icon">⚠</span>
-        <span class="draft-banner-text">DRAFT — HUMAN REVIEW REQUIRED</span>
-        <span class="draft-banner-sub">Not sent automatically</span>
-      </div>`;
-  } else if (isAuto) {
-    responseHeaderHtml = `
-      <div class="response-header">
-        <span class="response-label auto-label">✅ Assistant</span>
-      </div>`;
-  } else {
-    responseHeaderHtml = `
-      <div class="response-header">
-        <span class="response-label" style="color:var(--text-dim)">Response</span>
-      </div>`;
-  }
-
-  // Reply bubble
   const bubbleClass = isEscalate ? 'agent-bubble draft-bubble' : 'agent-bubble';
-  let replyBubbleHtml = `<div class="msg-bubble ${bubbleClass}">${esc(replyText)}</div>`;
-
-  // Fallback notice
-  if (data.is_fallback) {
-    replyBubbleHtml += `
-      <div class="fallback-notice">⚠ Safe fallback — schema or validation failure</div>`;
-  }
 
   const responseSectionHtml = `
     <div class="response-section">
-      ${responseHeaderHtml}
-      ${replyBubbleHtml}
+      <div class="agent-chat-row">
+        <div class="agent-avatar-wrap">
+          <img src="/static/delta_agent.jpg" alt="David - Delta Customer Service Specialist" class="agent-avatar-img">
+          <span class="online-badge" title="Active Delta Specialist"></span>
+        </div>
+        <div class="agent-content-area">
+          <div class="agent-meta-header">
+            <span class="agent-name">David</span>
+            <span class="agent-brand-pill">Delta Airlines</span>
+            <span class="agent-tag ${isEscalate ? 'tag-draft' : 'tag-auto'}">${isEscalate ? '⚠️ Human Review Draft' : '✅ Verified Assistant'}</span>
+          </div>
+          ${isEscalate ? `
+            <div class="draft-banner">
+              <span class="draft-banner-icon">⚠</span>
+              <span class="draft-banner-text">DRAFT — HUMAN REVIEW REQUIRED</span>
+              <span class="draft-banner-sub">Not sent automatically</span>
+            </div>` : ''}
+          <div class="msg-bubble ${bubbleClass}">
+            ${esc(replyText)}
+          </div>
+          ${data.is_fallback ? '<div class="fallback-notice">⚠ Safe fallback — schema or validation failure</div>' : ''}
+        </div>
+      </div>
     </div>`;
 
   // ── 3. DECISION CARD ──
@@ -295,8 +284,22 @@ function buildLoadingGroup(customerText, attachment) {
         <div class="bubble-text">${esc(customerText)}</div>
         ${attHtml}
       </div>
+      <div class="customer-avatar" title="You (Customer)">👤</div>
     </div>
-    <div class="loading-bubble"><div class="spinner"></div>Running pipeline…</div>`;
+    <div class="agent-chat-row" style="margin-top: 8px;">
+      <div class="agent-avatar-wrap">
+        <img src="/static/delta_agent.jpg" alt="David - Delta Specialist" class="agent-avatar-img">
+        <span class="online-badge"></span>
+      </div>
+      <div class="agent-content-area">
+        <div class="agent-meta-header">
+          <span class="agent-name">David</span>
+          <span class="agent-brand-pill">Delta Airlines</span>
+          <span class="agent-tag tag-running">Analyzing…</span>
+        </div>
+        <div class="loading-bubble"><div class="spinner"></div>Consulting Delta policy & drafting response…</div>
+      </div>
+    </div>`;
   return group;
 }
 
@@ -405,9 +408,12 @@ function insertWelcome() {
   w.id = 'welcomeState';
   w.className = 'welcome';
   w.innerHTML = `
-    <div class="welcome-icon">✈</div>
-    <h1>Delta Support Agent</h1>
-    <p>Send a customer support message to watch the full pipeline run live — safety, intent, policy, retrieval, generation, and final routing.</p>
+    <div class="welcome-avatar-wrap">
+      <img src="/static/delta_agent.jpg" alt="David - Delta Customer Service Specialist" class="welcome-avatar-img">
+      <span class="welcome-online-pulse"></span>
+    </div>
+    <h1>Delta Customer Support</h1>
+    <p>Chat with <strong>David</strong>, Delta Support Specialist. Watch the pipeline verify safety, classify your intent, retrieve past resolutions, and route responses live.</p>
     <div class="welcome-chips">
       <span class="wchip">🛡 Deterministic Safety</span>
       <span class="wchip">🎯 12-Intent Taxonomy</span>

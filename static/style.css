@@ -179,6 +179,24 @@ body {
   margin: auto; text-align: center; max-width: 460px; padding: 40px 20px;
   animation: fadeUp 0.4s ease;
 }
+.welcome-avatar-wrap {
+  position: relative; display: inline-block; margin-bottom: 14px;
+}
+.welcome-avatar-img {
+  width: 96px; height: 96px; border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #da291c;
+  box-shadow: 0 10px 30px rgba(218,41,28,0.35), 0 0 20px rgba(79,142,247,0.25);
+  background: var(--surface-2);
+}
+.welcome-online-pulse {
+  position: absolute; bottom: 4px; right: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--green);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 10px var(--green);
+}
+
 .welcome-icon { font-size: 52px; margin-bottom: 16px; }
 .welcome h1 { font-size: 24px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .welcome p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
@@ -211,11 +229,19 @@ body {
 
 /* Customer row */
 .customer-row {
-  display: flex; justify-content: flex-end;
+  display: flex; justify-content: flex-end; align-items: flex-start; gap: 9px;
+}
+.customer-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #cbd5e1; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 .customer-label-row {
   display: flex; justify-content: flex-end;
-  margin-bottom: 4px;
+  margin-bottom: 4px; padding-right: 43px;
 }
 .msg-label {
   font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em;
@@ -234,6 +260,65 @@ body {
   color: #fff;
   border-bottom-right-radius: 4px;
   box-shadow: 0 4px 18px rgba(79,142,247,0.22);
+}
+
+/* Agent chat row with assistant figure */
+.agent-chat-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  max-width: 100%;
+}
+.agent-avatar-wrap {
+  position: relative; flex-shrink: 0; width: 44px; height: 44px;
+}
+.agent-avatar-img {
+  width: 44px; height: 44px; border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #da291c;
+  box-shadow: 0 3px 12px rgba(218,41,28,0.30);
+  background: var(--surface-2);
+}
+.online-badge {
+  position: absolute; bottom: 0; right: 0;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 6px var(--green);
+}
+
+.agent-content-area {
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1; min-width: 0;
+}
+
+.agent-meta-header {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.agent-name {
+  font-size: 13.5px; font-weight: 700; color: #fff;
+  letter-spacing: 0.01em;
+}
+.agent-brand-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(218,41,28,0.14);
+  border: 1px solid rgba(218,41,28,0.35);
+  color: #ff6b6b;
+  padding: 1px 7px; border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+.agent-tag {
+  font-size: 11px; font-weight: 600;
+  padding: 1px 7px; border-radius: 99px;
+}
+.tag-auto {
+  background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green);
+}
+.tag-draft {
+  background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber);
+}
+.tag-running {
+  background: rgba(79,142,247,0.12); border: 1px solid rgba(79,142,247,0.30); color: var(--accent);
 }
 
 /* Response section */
