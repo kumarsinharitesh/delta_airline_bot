@@ -1,0 +1,408 @@
+# =============================================================================
+# Delta Customer Support — Intent Taxonomy
+# Phase 3: Derived entirely from analysis of the Delta train split (31,791
+# customer messages). Intents represent distinct CUSTOMER GOALS, not sentiment
+# or resolution outcomes.
+#
+# Taxonomy version : 1.0
+# Derived from     : data/processed/train.jsonl (NOT dev or test)
+# Discovery script : src/intents/discover.py
+# =============================================================================
+
+metadata:
+  version: "1.0"
+  brand: "Delta"
+  taxonomy_structure: "12 support intents + 1 fallback ambiguity class"
+  total_support_intents: 12
+  total_fallback_classes: 1
+  total_classes: 13
+  discovery_source: "Train split only (31,791 customer messages)"
+  annotation_guide: "data/annotation_guide.md"
+  safety_sensitive_intents:
+    - REFUND_OR_COMPENSATION
+    - PAYMENT_OR_CHARGE_DISPUTE
+    - SPECIAL_ASSISTANCE
+
+intents:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 1. FLIGHT_STATUS_OR_DELAY
+  # Largest intent in dataset (~27% of pattern matches). Covers both status
+  # inquiries (factual) and delay/disruption reports (time-sensitive).
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: FLIGHT_STATUS_OR_DELAY
+    name: "Flight Status or Delay"
+    description: >
+      Customer is asking about the current or upcoming status of a specific
+      flight, or reporting/complaining about a delay, disruption, cancellation
+      of a SPECIFIC flight. Includes connecting flight missed due to delay.
+      The customer's primary need is real-time information or acknowledgement
+      of a disruption.
+    in_scope_examples:
+      - "@Delta my flight 1251 is delayed 2 hours, any updates?"
+      - "Is DL 404 on time tonight?"
+      - "@Delta my connecting flight left without me because we arrived late"
+      - "@Delta my flight has been pushed back 5 times. What is happening?"
+      - "Stuck at ATL, no info about when flight is leaving"
+      - "@Delta flight delayed again — third time this month!"
+    out_of_scope_examples:
+      - "@Delta what time do flights leave NYC to LAX tomorrow?" → SCHEDULE_OR_BOOKING_INQUIRY
+      - "@Delta my bag is still not here after my flight" → BAGGAGE_ISSUE
+      - "@Delta I want to cancel my delayed flight and get a refund" → CANCEL_OR_CHANGE_FLIGHT
+    annotation_rules: >
+      Use this intent when the customer is asking about a SPECIFIC flight's
+      current status, OR reporting that THEIR flight was delayed/disrupted.
+      The flight number, route, or time context should be present or inferable.
+      If the customer immediately pivots to asking for a refund/change as the
+      PRIMARY goal, use CANCEL_OR_CHANGE_FLIGHT or REFUND_OR_COMPENSATION instead.
+    confusable_with:
+      - CANCEL_OR_CHANGE_FLIGHT: "choose FLIGHT_STATUS_OR_DELAY if reporting the delay is the primary message; choose CANCEL if requesting a rebooking/refund as the primary goal"
+      - SCHEDULE_OR_BOOKING_INQUIRY: "FLIGHT_STATUS_OR_DELAY = about a specific, existing flight; SCHEDULE = asking about future flights or availability"
+    priority_notes: "High volume, high time-sensitivity. AI should prioritize rapid response."
+    data_evidence: "8,663 pattern matches (27.2%), top bigrams: 'flight delayed', 'delayed hours', 'connecting flight'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 2. CANCEL_OR_CHANGE_FLIGHT
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: CANCEL_OR_CHANGE_FLIGHT
+    name: "Cancel or Change Flight"
+    description: >
+      Customer wants to cancel a flight, rebook to a different flight, reschedule,
+      or change flight details (dates, times, routing). Includes requests triggered
+      by disruptions where the customer's primary goal is getting rebooked.
+    in_scope_examples:
+      - "@Delta I need to change my flight from Oct 5 to Oct 8"
+      - "How do I cancel my Delta ticket? Need emergency refund"
+      - "@Delta can you rebook me on the next available flight to JFK?"
+      - "@Delta I need to cancel flight 1403 and get a credit"
+      - "Trying to change my flight — website won't let me"
+    out_of_scope_examples:
+      - "@Delta my flight was delayed, what is the update?" → FLIGHT_STATUS_OR_DELAY
+      - "@Delta I want a refund for a cancelled flight" → REFUND_OR_COMPENSATION
+    annotation_rules: >
+      Use this when the explicit customer goal is to CHANGE or CANCEL their booking.
+      If the message mentions both delay AND rebooking, use this intent because
+      rebooking is the actionable support need. If only asking for a refund after
+      cancellation, use REFUND_OR_COMPENSATION.
+    confusable_with:
+      - FLIGHT_STATUS_OR_DELAY: "if customer only reports a delay without asking to rebook → FLIGHT_STATUS_OR_DELAY"
+      - REFUND_OR_COMPENSATION: "if customer has already been cancelled/rebooked and now only wants money back → REFUND_OR_COMPENSATION"
+    priority_notes: "Moderate risk; time-sensitive. High AI-handle potential for standard changes."
+    data_evidence: "1,461 pattern matches (4.6%), top trigrams: 'need change flight', 'trying change flight'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 3. SCHEDULE_OR_BOOKING_INQUIRY
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: SCHEDULE_OR_BOOKING_INQUIRY
+    name: "Schedule or Booking Inquiry"
+    description: >
+      Customer is asking about future flight availability, schedules, routes,
+      or needs help with a NEW booking. Also includes questions about policies
+      (baggage fees for a future flight, check-in window, etc.) asked in
+      planning context, NOT about an in-progress issue.
+    in_scope_examples:
+      - "@Delta what time is the earliest flight from ATL to LAX tomorrow?"
+      - "How do I book using my SkyMiles? Website keeps failing"
+      - "@Delta trying to book flight, why is first class cheaper than coach?"
+      - "What is your policy on checked bags for international flights?"
+      - "Is there a nonstop from JFK to AMS in December?"
+    out_of_scope_examples:
+      - "My flight 1403 is delayed — what's the status?" → FLIGHT_STATUS_OR_DELAY
+      - "I need to change my existing reservation" → CANCEL_OR_CHANGE_FLIGHT
+    annotation_rules: >
+      Use this for PROSPECTIVE/PLANNING queries: booking a new flight, checking
+      availability, or asking about policies as part of planning. The key
+      distinguisher from FLIGHT_STATUS_OR_DELAY is that no specific existing
+      disrupted/delayed flight is being referenced.
+    confusable_with:
+      - FLIGHT_STATUS_OR_DELAY: "FLIGHT_STATUS = existing flight, known flight number or imminent travel; SCHEDULE = future/hypothetical"
+    priority_notes: "Moderate volume; good AI-handle candidate for informational queries."
+    data_evidence: "3,370 booking + 1,411 schedule pattern matches; bigrams: 'book flight', 'trying book flight'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 4. CHECKIN_OR_BOARDING
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: CHECKIN_OR_BOARDING
+    name: "Check-in or Boarding"
+    description: >
+      Customer has an issue or question specifically about the check-in process,
+      boarding pass, gate assignment, TSA PreCheck on their boarding pass,
+      or the physical boarding process.
+    in_scope_examples:
+      - "@Delta my boarding pass doesn't show TSA Pre, how do I fix this?"
+      - "Cannot check in online for my flight tomorrow"
+      - "@Delta gate agent gave away my seat at the gate, now I'm bumped"
+      - "When does check-in open for international flights?"
+      - "Mobile boarding pass not scanning at the gate"
+    out_of_scope_examples:
+      - "@Delta I want to select a different seat" → SEAT_OR_UPGRADE
+      - "@Delta my flight was delayed 2 hours" → FLIGHT_STATUS_OR_DELAY
+    annotation_rules: >
+      Use when the specific friction point is the check-in/boarding process itself.
+      If the problem is a seat issue discovered AT boarding but the ask is about
+      the seat itself, use SEAT_OR_UPGRADE.
+    confusable_with:
+      - SEAT_OR_UPGRADE: "boarding pass / gate access = CHECKIN_OR_BOARDING; seat assignment/upgrade = SEAT_OR_UPGRADE"
+      - FLIGHT_STATUS_OR_DELAY: "if gate/flight info is secondary to delay complaint → FLIGHT_STATUS_OR_DELAY"
+    priority_notes: "Time-sensitive during travel day. AI should flag for urgent response."
+    data_evidence: "2,830 pattern matches (8.9%), bigrams: 'boarding pass', 'gate agent'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 5. SEAT_OR_UPGRADE
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: SEAT_OR_UPGRADE
+    name: "Seat Selection or Upgrade"
+    description: >
+      Customer wants to select, change, or upgrade their seat; is asking about
+      Comfort+, First Class, or exit row; or is complaining that their previously
+      selected/upgraded seat was changed without consent.
+    in_scope_examples:
+      - "@Delta can I pay to upgrade to Comfort+ for my flight tomorrow?"
+      - "How do I select seats for my 4-person booking? Only seeing middle seats"
+      - "@Delta you changed my seat without notifying me — I had a window seat"
+      - "Can I select exit row with Basic Economy?"
+      - "Want to request bulkhead seat for my tall husband"
+    out_of_scope_examples:
+      - "@Delta boarding pass doesn't show my seat" → CHECKIN_OR_BOARDING
+      - "My flight was upgraded but equipment changed" → FLIGHT_STATUS_OR_DELAY
+    annotation_rules: >
+      Use when the customer's primary goal is about a specific seat or cabin
+      class upgrade. Unsolicited seat changes (e.g., equipment swap) count here
+      only if the customer is primarily upset about the seat.
+    confusable_with:
+      - CHECKIN_OR_BOARDING: "seat at check-in → SEAT_OR_UPGRADE; boarding pass issue → CHECKIN_OR_BOARDING"
+    priority_notes: "Good AI-handle candidate for informational queries; escalate consent-related complaints."
+    data_evidence: "2,616 pattern matches (8.2%), bigrams: 'first class', 'middle seat', 'upgrade first class'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 6. BAGGAGE_ISSUE
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: BAGGAGE_ISSUE
+    name: "Baggage Issue"
+    description: >
+      Customer has a problem with checked or carry-on baggage: delayed delivery,
+      lost baggage, damaged baggage, or misrouted baggage. Also includes disputes
+      about baggage fees when the bag is already involved (not pre-flight policy questions).
+    in_scope_examples:
+      - "@Delta my bag hasn't arrived — was on DL 1251 three hours ago"
+      - "My suitcase was damaged. Who do I contact for a claim?"
+      - "@Delta where is my bag? It's been missing for 2 days"
+      - "Bag was sent to wrong city. I need it in NYC tomorrow"
+      - "@Delta I was told bag would be delivered but it never came"
+    out_of_scope_examples:
+      - "How much is the checked bag fee for international?" → SCHEDULE_OR_BOOKING_INQUIRY
+      - "I lost my phone on the plane" → LOST_AND_FOUND
+    annotation_rules: >
+      Use when the issue is about a physical bag that has been checked in or
+      was already in Delta's possession. Baggage fee questions for future travel
+      = SCHEDULE_OR_BOOKING_INQUIRY. Items lost ON the plane = LOST_AND_FOUND.
+    confusable_with:
+      - LOST_AND_FOUND: "lost BAG = BAGGAGE_ISSUE; item left ON the plane = LOST_AND_FOUND"
+      - REFUND_OR_COMPENSATION: "if bag claim is settled and now requesting money back → REFUND_OR_COMPENSATION"
+    priority_notes: "Escalate if bag missing >24h or customer has medical supplies."
+    data_evidence: "1,547 pattern matches (4.9%), bigrams: 'check bag', trigrams: 'delayed bag delivered'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 7. SKYMILES_OR_LOYALTY
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: SKYMILES_OR_LOYALTY
+    name: "SkyMiles or Loyalty"
+    description: >
+      Customer has a question or problem with their SkyMiles account, points
+      balance, elite status, medallion qualification, award booking, or a
+      co-branded credit card miles issue.
+    in_scope_examples:
+      - "@Delta my flight miles aren't showing in my SkyMiles account"
+      - "How do I book a flight using SkyMiles? The site keeps failing"
+      - "@Delta I should have qualified for Platinum but my status isn't updated"
+      - "How many miles do I need for an upgrade to first class?"
+      - "@Delta miles from a partner flight aren't in my account"
+    out_of_scope_examples:
+      - "@Delta I can't log in to my SkyMiles account" → ACCOUNT_ACCESS
+      - "I want the miles back from my cancelled flight" → REFUND_OR_COMPENSATION
+    annotation_rules: >
+      Use when the primary question is about earning, redeeming, or disputing
+      SkyMiles/status. Account login/password issues = ACCOUNT_ACCESS. Miles
+      refund from a flight problem = REFUND_OR_COMPENSATION.
+    confusable_with:
+      - ACCOUNT_ACCESS: "can't log in = ACCOUNT_ACCESS; miles balance wrong = SKYMILES_OR_LOYALTY"
+      - REFUND_OR_COMPENSATION: "miles return from cancelled flight = REFUND_OR_COMPENSATION"
+    priority_notes: "Good AI-handle candidate for informational queries."
+    data_evidence: "1,844 pattern matches (5.8%), bigrams: 'sky miles', 'sky club', 'sky miles account'"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 8. ACCOUNT_ACCESS
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: ACCOUNT_ACCESS
+    name: "Account Access"
+    description: >
+      Customer cannot log in to their account, needs a password reset, has
+      issues with their profile, or has an account locked/disabled. Distinct
+      from SkyMiles balance questions.
+    in_scope_examples:
+      - "@Delta I can't log in to my SkyMiles account — forgot password"
+      - "Delta.com won't let me sign in on the app"
+      - "@Delta my account shows wrong email address, please help"
+      - "AwardWallet won't link to my Delta account, is that intentional?"
+    out_of_scope_examples:
+      - "@Delta my miles aren't showing" → SKYMILES_OR_LOYALTY
+      - "@Delta the app crashes when I try to check in" → CHECKIN_OR_BOARDING
+    annotation_rules: >
+      Use when the customer explicitly cannot authenticate or access their
+      account. If they're logged in but see wrong data, it may be SKYMILES_OR_LOYALTY.
+    confusable_with:
+      - SKYMILES_OR_LOYALTY: "login issue = ACCOUNT_ACCESS; account data wrong = SKYMILES_OR_LOYALTY"
+    priority_notes: "Moderate risk — may require identity verification."
+    data_evidence: "659 pattern matches (2.1%)"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 9. REFUND_OR_COMPENSATION
+  # *** SAFETY-SENSITIVE ***
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: REFUND_OR_COMPENSATION
+    name: "Refund or Compensation"
+    description: >
+      Customer is explicitly requesting a monetary refund, travel credit,
+      voucher, eCertificate, SkyMiles compensation, or reimbursement for
+      out-of-pocket expenses caused by Delta. Includes denied-boarding
+      compensation and goodwill gestures.
+    in_scope_examples:
+      - "@Delta my flight was cancelled, I want a full refund"
+      - "I paid for Comfort+ but was downgraded — requesting refund"
+      - "@Delta I spent $300 on a hotel due to your delay, I want reimbursement"
+      - "Where is the $50 travel voucher I was promised?"
+      - "@Delta I'd like my miles back from the cancelled award booking"
+    out_of_scope_examples:
+      - "@Delta I need to cancel my flight" → CANCEL_OR_CHANGE_FLIGHT
+      - "@Delta I was double charged for baggage" → PAYMENT_OR_CHARGE_DISPUTE
+    annotation_rules: >
+      Use when the customer is explicitly asking for money, credit, miles, or
+      compensation back. If the customer first wants to cancel and then will
+      discuss refund, primary intent may be CANCEL_OR_CHANGE_FLIGHT.
+      If the dispute is about an incorrect CHARGE (overcharged), use
+      PAYMENT_OR_CHARGE_DISPUTE.
+    confusable_with:
+      - PAYMENT_OR_CHARGE_DISPUTE: "already paid wrong amount → PAYMENT; asking for refund of legitimate charge → REFUND"
+      - CANCEL_OR_CHANGE_FLIGHT: "cancel = changing the booking; refund = getting money back"
+    priority_notes: >
+      SAFETY-SENSITIVE. Financial commitment. AI must NOT promise refund amounts.
+      Should acknowledge and route to appropriate process. Escalate denied-boarding
+      and legal/regulatory compensation claims to human.
+    data_evidence: "723 pattern matches (2.3%); bigrams: 'travel voucher', 'miles back'; data shows escalated 2+ day disputes"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 10. PAYMENT_OR_CHARGE_DISPUTE
+  # *** SAFETY-SENSITIVE ***
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: PAYMENT_OR_CHARGE_DISPUTE
+    name: "Payment or Charge Dispute"
+    description: >
+      Customer is disputing a charge, reporting an incorrect or duplicate charge,
+      asking about an unexpected fee, or concerned about a transaction on their
+      credit/debit card. Not the same as requesting a refund for a service
+      already rendered.
+    in_scope_examples:
+      - "@Delta I was charged twice for my baggage fee"
+      - "Unexpected $200 charge on my credit card from Delta — what is this?"
+      - "@Delta I paid for a seat upgrade but it was not applied"
+      - "I was charged a change fee but was told it would be waived"
+    out_of_scope_examples:
+      - "@Delta I want a refund for my cancelled flight" → REFUND_OR_COMPENSATION
+      - "@Delta what is the baggage fee?" → SCHEDULE_OR_BOOKING_INQUIRY
+    annotation_rules: >
+      Use when there is a transaction dispute: money was (allegedly incorrectly)
+      taken. Pure refund requests for a flight/service use REFUND_OR_COMPENSATION.
+    confusable_with:
+      - REFUND_OR_COMPENSATION: "wrong charge → PAYMENT_OR_CHARGE_DISPUTE; refund for valid charge → REFUND_OR_COMPENSATION"
+    priority_notes: >
+      SAFETY-SENSITIVE. Potential fraud risk if unexpected charges. Should
+      acknowledge and never disclose financial details. Escalate duplicate-charge
+      or fraud-suspected cases to human immediately.
+    data_evidence: "881 pattern matches (2.8%); bigrams: 'credit card', 'charged twice'; includes fraud-adjacent cases"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 11. SPECIAL_ASSISTANCE
+  # *** SAFETY-SENSITIVE ***
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: SPECIAL_ASSISTANCE
+    name: "Special Assistance"
+    description: >
+      Customer needs or is requesting special assistance due to disability,
+      medical condition, mobility impairment, dietary restriction, pet travel,
+      unaccompanied minor, or other special accommodation not covered by
+      standard booking.
+    in_scope_examples:
+      - "@Delta I need wheelchair assistance at ATL for my elderly mother"
+      - "I have celiac disease — is there a gluten-free meal on DL 40?"
+      - "@Delta traveling with a service animal, what documentation do I need?"
+      - "How do I request an unaccompanied minor service for my child?"
+      - "I provided medical assistance to a passenger — how do I get acknowledged?"
+    out_of_scope_examples:
+      - "@Delta I lost my medication on the plane" → LOST_AND_FOUND
+      - "@Delta I need a seat with extra legroom" → SEAT_OR_UPGRADE
+    annotation_rules: >
+      Use when the customer's need involves an accommodation that goes beyond
+      standard service because of a health, accessibility, or special circumstance.
+      Extra legroom for tall people = SEAT_OR_UPGRADE not SPECIAL_ASSISTANCE.
+    confusable_with:
+      - SEAT_OR_UPGRADE: "medical need for specific seat → SPECIAL_ASSISTANCE; preference for legroom → SEAT_OR_UPGRADE"
+      - LOST_AND_FOUND: "medication left on plane → LOST_AND_FOUND; need medication accommodated in flight → SPECIAL_ASSISTANCE"
+    priority_notes: >
+      SAFETY-SENSITIVE. Medical emergencies and safety-impacting requests must
+      be immediately escalated to human. AI must NOT make binding accessibility
+      commitments.
+    data_evidence: "280 pattern matches (0.9%); small but important; distinct support action"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 12. COMPLAINT_OR_FEEDBACK
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: COMPLAINT_OR_FEEDBACK
+    name: "Complaint or General Feedback"
+    description: >
+      Customer is expressing general dissatisfaction, praise, or feedback about
+      Delta's service, staff, experience, or operations WITHOUT requesting a
+      specific action. Includes shout-outs for great service and general venting.
+      Only use this intent when NO other specific actionable intent applies.
+    in_scope_examples:
+      - "@Delta your customer service is terrible, never flying again"
+      - "Big shout-out to the @Delta crew on DL 148 — outstanding service!"
+      - "@Delta the lounge renovation at ATL is stunning, well done"
+      - "I've been a loyal customer for 20 years and this is how you treat me"
+      - "@Delta the new boarding process is confusing and wastes everyone's time"
+    out_of_scope_examples:
+      - "@Delta this delay is unacceptable — when will we leave?" → FLIGHT_STATUS_OR_DELAY
+      - "@Delta terrible service and I want my money back" → REFUND_OR_COMPENSATION
+    annotation_rules: >
+      This is a RESIDUAL intent — use it only when the customer's message does
+      not contain an actionable support request. If the complaint includes a
+      specific ask (refund, rebook, compensation), use the more specific intent.
+      Positive feedback (praise, thank-you) goes here too.
+    confusable_with:
+      - FLIGHT_STATUS_OR_DELAY: "if complaint is about a current delay and customer wants info → FLIGHT_STATUS_OR_DELAY"
+      - REFUND_OR_COMPENSATION: "if complaint includes a request for money/credit → REFUND_OR_COMPENSATION"
+    priority_notes: "Lower urgency. Positive feedback AI can respond; negative complaints AI should acknowledge and offer follow-up."
+    data_evidence: "1,151 complaint pattern matches + 6,164 general feedback matches; residual after actionable intents extracted"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SPECIAL: AMBIGUOUS_OR_INSUFFICIENT_CONTEXT
+  # Not a true intent — used only for genuinely ambiguous messages.
+  # ─────────────────────────────────────────────────────────────────────────────
+  - intent_id: AMBIGUOUS_OR_INSUFFICIENT_CONTEXT
+    name: "Ambiguous or Insufficient Context"
+    description: >
+      The customer message does not contain enough context to determine a
+      specific intent, even with conversation context. Reserved for genuinely
+      ambiguous messages.
+    in_scope_examples:
+      - "@Delta can you help me?" (no further context)
+      - "@Delta this is ridiculous" (no specific issue mentioned)
+      - "Need to know ASAP" (no subject)
+    out_of_scope_examples:
+      - Most messages that seem vague but have enough context clues
+    annotation_rules: >
+      Use ONLY as a last resort. Annotators should first try to infer intent
+      from full conversation context. Only use if truly no intent can be determined.
+      Mark annotation_confidence as LOW.
+    confusable_with: []
+    priority_notes: "These are valuable for evaluating robustness. Do not force into a specific intent."
+    data_evidence: "Small number in dataset; present mostly in single-tweet conversations"

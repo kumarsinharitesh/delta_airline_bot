@@ -1,0 +1,14 @@
+intent_id,count_train_approx,percentage_train_approx,golden_count,golden_percentage,distinctiveness_notes,risk_level,confusable_intents
+FLIGHT_STATUS_OR_DELAY,8663,27.25,36,18.0,"HIGH — 'delayed', flight number, 'status of flight' are strong signals",STANDARD,"CANCEL_OR_CHANGE_FLIGHT, SCHEDULE_OR_BOOKING_INQUIRY"
+COMPLAINT_OR_FEEDBACK,6164,19.39,53,26.5,LOW — residual; hard to distinguish from specific intents,STANDARD,"FLIGHT_STATUS_OR_DELAY, REFUND_OR_COMPENSATION"
+SCHEDULE_OR_BOOKING_INQUIRY,3370,10.6,11,5.5,MEDIUM — overlaps with FLIGHT_STATUS on future-flight queries,STANDARD,"FLIGHT_STATUS_OR_DELAY, CANCEL_OR_CHANGE_FLIGHT"
+CHECKIN_OR_BOARDING,2830,8.9,15,7.5,"MEDIUM — 'check-in', 'boarding pass', 'TSA Pre' are strong; 'gate' is shared",STANDARD,"SEAT_OR_UPGRADE, FLIGHT_STATUS_OR_DELAY"
+SEAT_OR_UPGRADE,2616,8.23,9,4.5,"HIGH — 'seat', 'upgrade', 'first class' are strong signals",STANDARD,"CHECKIN_OR_BOARDING, COMPLAINT_OR_FEEDBACK"
+SKYMILES_OR_LOYALTY,1844,5.8,16,8.0,"HIGH — 'SkyMiles', 'miles', 'medallion' are very specific",STANDARD,"ACCOUNT_ACCESS, REFUND_OR_COMPENSATION"
+BAGGAGE_ISSUE,1547,4.87,15,7.5,"HIGH — 'bag', 'luggage', 'suitcase', 'missing bag' are strong",STANDARD,"REFUND_OR_COMPENSATION, SCHEDULE_OR_BOOKING_INQUIRY"
+CANCEL_OR_CHANGE_FLIGHT,1461,4.6,11,5.5,"HIGH — 'cancel', 'rebook', 'change my flight' are distinct",STANDARD,"FLIGHT_STATUS_OR_DELAY, REFUND_OR_COMPENSATION"
+PAYMENT_OR_CHARGE_DISPUTE,881,2.77,3,1.5,MEDIUM — overlaps with REFUND when both involve money,SAFETY-SENSITIVE,"REFUND_OR_COMPENSATION, SCHEDULE_OR_BOOKING_INQUIRY"
+REFUND_OR_COMPENSATION,723,2.27,7,3.5,"HIGH — 'refund', 'compensate', 'voucher', 'reimbursement' are specific",SAFETY-SENSITIVE,"CANCEL_OR_CHANGE_FLIGHT, PAYMENT_OR_CHARGE_DISPUTE"
+ACCOUNT_ACCESS,659,2.07,0,0.0,"HIGH — 'can't log in', 'password' are highly specific; RARE",STANDARD,"SKYMILES_OR_LOYALTY, CHECKIN_OR_BOARDING"
+SPECIAL_ASSISTANCE,280,0.88,5,2.5,"HIGH — 'wheelchair', 'medical', 'disability' are strong; SMALL class",SAFETY-SENSITIVE,"SEAT_OR_UPGRADE, BAGGAGE_ISSUE"
+AMBIGUOUS_OR_INSUFFICIENT_CONTEXT,0,0.0,19,9.5,N/A — by definition has no distinguishing signal,STANDARD,Any intent (by definition)

@@ -1,0 +1,14 @@
+intent_id,train_kw_approx_pct,golden_count,golden_pct,note
+ACCOUNT_ACCESS,2.1,0,0.0,
+AMBIGUOUS_OR_INSUFFICIENT_CONTEXT,~2 (est.),24,12.0,Not measurable from keywords; golden captures social/low-context tweets
+BAGGAGE_ISSUE,4.9,6,3.0,
+CANCEL_OR_CHANGE_FLIGHT,4.6,10,5.0,
+CHECKIN_OR_BOARDING,8.9,12,6.0,
+COMPLAINT_OR_FEEDBACK,19.4,62,31.0,Golden includes social/positive feedback; train approx includes pure negatives only
+FLIGHT_STATUS_OR_DELAY,27.2,31,15.5,
+PAYMENT_OR_CHARGE_DISPUTE,2.8,3,1.5,
+REFUND_OR_COMPENSATION,2.3,8,4.0,
+SCHEDULE_OR_BOOKING_INQUIRY,10.6,14,7.0,
+SEAT_OR_UPGRADE,8.2,10,5.0,
+SKYMILES_OR_LOYALTY,5.8,15,7.5,
+SPECIAL_ASSISTANCE,0.9,5,2.5,

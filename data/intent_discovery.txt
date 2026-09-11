@@ -1,0 +1,378 @@
+========================================================================
+PHASE 3 -- INTENT DISCOVERY REPORT (Train split only)
+========================================================================
+Total customer messages in train split: 31,791
+
+--- TOP 60 UNIGRAMS (excluding stopwords) ---
+  flight                         8,429  (26.5%)
+  url                            4,540  (14.3%)
+  get                            2,769  (8.7%)
+  thanks                         2,754  (8.7%)
+  now                            2,006  (6.3%)
+  time                           1,982  (6.2%)
+  thank                          1,958  (6.2%)
+  help                           1,946  (6.1%)
+  service                        1,821  (5.7%)
+  out                            1,709  (5.4%)
+  seat                           1,554  (4.9%)
+  gate                           1,510  (4.7%)
+  plane                          1,386  (4.4%)
+  why                            1,384  (4.4%)
+  customer                       1,356  (4.3%)
+  one                            1,355  (4.3%)
+  need                           1,340  (4.2%)
+  back                           1,308  (4.1%)
+  hours                          1,296  (4.1%)
+  flights                        1,231  (3.9%)
+  delayed                        1,191  (3.7%)
+  great                          1,181  (3.7%)
+  today                          1,116  (3.5%)
+  like                           1,111  (3.5%)
+  still                          1,067  (3.4%)
+  hour                           1,064  (3.3%)
+  don                            1,034  (3.3%)
+  fly                            1,025  (3.2%)
+  flying                         1,013  (3.2%)
+  check                          997  (3.1%)
+  got                            989  (3.1%)
+  first                          985  (3.1%)
+  atl                            968  (3.0%)
+  change                         917  (2.9%)
+  bag                            917  (2.9%)
+  make                           890  (2.8%)
+  any                            880  (2.8%)
+  after                          860  (2.7%)
+  airport                        834  (2.6%)
+  again                          829  (2.6%)
+  way                            827  (2.6%)
+  seats                          825  (2.6%)
+  only                           825  (2.6%)
+  upgrade                        815  (2.6%)
+  home                           811  (2.6%)
+  over                           806  (2.5%)
+  call                           805  (2.5%)
+  know                           773  (2.4%)
+  going                          772  (2.4%)
+  good                           766  (2.4%)
+  app                            766  (2.4%)
+  last                           759  (2.4%)
+  were                           759  (2.4%)
+  because                        753  (2.4%)
+  wait                           733  (2.3%)
+  day                            728  (2.3%)
+  delay                          725  (2.3%)
+  ticket                         723  (2.3%)
+  even                           721  (2.3%)
+  never                          720  (2.3%)
+
+--- TOP 60 BIGRAMS ---
+  customer service                         948  (3.0%)
+  first class                              390  (1.2%)
+  flight delayed                           286  (0.9%)
+  gate agent                               282  (0.9%)
+  sky club                                 273  (0.9%)
+  flight attendant                         273  (0.9%)
+  change flight                            216  (0.7%)
+  call back                                182  (0.6%)
+  boarding pass                            172  (0.5%)
+  need help                                170  (0.5%)
+  shout out                                168  (0.5%)
+  flight attendants                        162  (0.5%)
+  flight tomorrow                          158  (0.5%)
+  connecting flight                        153  (0.5%)
+  flight crew                              153  (0.5%)
+  get home                                 153  (0.5%)
+  hour delay                               148  (0.5%)
+  middle seat                              138  (0.4%)
+  take off                                 135  (0.4%)
+  first time                               132  (0.4%)
+  over hour                                129  (0.4%)
+  right now                                128  (0.4%)
+  thank much                               127  (0.4%)
+  wait time                                126  (0.4%)
+  delayed hours                            124  (0.4%)
+  looks like                               124  (0.4%)
+  next flight                              122  (0.4%)
+  delayed flight                           121  (0.4%)
+  last night                               121  (0.4%)
+  sky miles                                119  (0.4%)
+  gate agents                              116  (0.4%)
+  make sure                                115  (0.4%)
+  every time                               114  (0.4%)
+  url url                                  114  (0.4%)
+  hour wait                                114  (0.4%)
+  hour flight                              112  (0.4%)
+  earlier flight                           110  (0.3%)
+  two hours                                108  (0.3%)
+  great service                            105  (0.3%)
+  check bag                                105  (0.3%)
+  flight out                               104  (0.3%)
+  even though                              102  (0.3%)
+  trying get                               101  (0.3%)
+  basic economy                            101  (0.3%)
+  booked flight                            98  (0.3%)
+  1st class                                98  (0.3%)
+  any chance                               97  (0.3%)
+  flight home                              97  (0.3%)
+  hold time                                96  (0.3%)
+  great flight                             95  (0.3%)
+  book flight                              91  (0.3%)
+  miss connection                          89  (0.3%)
+  figure out                               88  (0.3%)
+  never fly                                88  (0.3%)
+  over hours                               87  (0.3%)
+  don know                                 86  (0.3%)
+  flight today                             86  (0.3%)
+  fly again                                86  (0.3%)
+  credit card                              85  (0.3%)
+  let know                                 84  (0.3%)
+
+--- TOP 40 TRIGRAMS ---
+  great customer service                             73  (0.2%)
+  flight delayed hours                               50  (0.2%)
+  never fly again                                    44  (0.1%)
+  trying change flight                               38  (0.1%)
+  every time fly                                     38  (0.1%)
+  worst customer service                             35  (0.1%)
+  need change flight                                 35  (0.1%)
+  never flying again                                 32  (0.1%)
+  customer service rep                               30  (0.1%)
+  first time flying                                  30  (0.1%)
+  miss connecting flight                             28  (0.1%)
+  poor customer service                              27  (0.1%)
+  terrible customer service                          26  (0.1%)
+  best customer service                              26  (0.1%)
+  first class upgrade                                26  (0.1%)
+  trying book flight                                 25  (0.1%)
+  tsa pre check                                      24  (0.1%)
+  amazing customer service                           23  (0.1%)
+  need flight coffee                                 22  (0.1%)
+  flight coffee black                                22  (0.1%)
+  coffee black add                                   22  (0.1%)
+  black add nondairy                                 22  (0.1%)
+  add nondairy vegan                                 22  (0.1%)
+  nondairy vegan creamers                            22  (0.1%)
+  get off plane                                      22  (0.1%)
+  upgrade first class                                22  (0.1%)
+  horrible customer service                          22  (0.1%)
+  hour hold time                                     21  (0.1%)
+  customer service today                             21  (0.1%)
+  went above beyond                                  21  (0.1%)
+  trying figure out                                  21  (0.1%)
+  thanks great service                               20  (0.1%)
+  first class flight                                 20  (0.1%)
+  delayed over hours                                 19  (0.1%)
+  international airport url                          19  (0.1%)
+  customer service line                              19  (0.1%)
+  hour wait time                                     19  (0.1%)
+  thanks quick response                              19  (0.1%)
+  sky miles account                                  19  (0.1%)
+  big shout out                                      19  (0.1%)
+
+--- TF-IDF TOP 80 TERMS ---
+  url                            2205.8395
+  flight                         1963.5884
+  thank                          1862.1129
+  thanks                         1760.6725
+  help                           941.1545
+  get                            905.3641
+  sent                           887.2066
+  now                            724.7510
+  time                           696.0004
+  service                        664.8261
+  why                            627.6820
+  need                           624.2768
+  out                            613.0993
+  yes                            583.0360
+  seat                           579.5752
+  great                          577.7422
+  gate                           536.9012
+  one                            525.5822
+  plane                          522.7358
+  customer                       522.0716
+  flights                        508.8524
+  back                           508.3878
+  hours                          503.9003
+  today                          501.5749
+  still                          499.7816
+  fly                            482.3026
+  check                          479.9517
+  delayed                        478.2114
+  like                           457.9188
+  love                           455.1615
+  got                            451.2211
+  good                           448.4416
+  flying                         447.2539
+  don                            440.3710
+  done                           436.9541
+  hour                           426.9732
+  again                          420.8095
+  upgrade                        414.4298
+  atl                            412.8772
+  any                            404.6145
+  change                         398.8703
+  much                           395.9677
+  first                          393.1751
+  know                           381.9731
+  way                            379.1663
+  call                           379.0836
+  bag                            376.3422
+  home                           375.5528
+  app                            373.8410
+  airport                        373.6806
+  make                           370.3346
+  going                          366.2118
+  never                          361.6707
+  see                            345.9137
+  delay                          339.5353
+  really                         338.1072
+  here                           336.6433
+  ticket                         336.5068
+  day                            335.8991
+  number                         335.6822
+  sky                            333.5178
+  only                           329.0488
+  over                           327.7172
+  wait                           325.5064
+  miles                          324.2747
+  seats                          320.5376
+  airline                        319.9709
+  after                          318.5741
+  crew                           315.1163
+  best                           313.9143
+  trying                         310.4818
+  even                           308.7806
+  waiting                        305.2292
+  last                           300.4416
+  were                           300.1011
+  travel                         298.9324
+  guys                           298.2035
+  too                            294.6354
+  another                        293.7568
+  because                        293.7089
+
+--- KEYWORD PATTERN MATCH COUNTS ---
+(Pattern can match same message multiple times; totals > 100% normal)
+Pattern                           Count        %
+FLIGHT_STATUS                     8,663    27.2%
+GENERAL_FEEDBACK                  6,164    19.4%
+BOOKING_RESERVATION               3,370    10.6%
+CHECKIN_BOARDING                  2,830     8.9%
+SEAT_UPGRADE                      2,616     8.2%
+SKYMILES_LOYALTY                  1,844     5.8%
+BAGGAGE_ISSUE                     1,547     4.9%
+CANCEL_CHANGE                     1,461     4.6%
+SCHEDULE_INQUIRY                  1,411     4.4%
+COMPLAINT_FEEDBACK                1,151     3.6%
+PAYMENT_CHARGE                      881     2.8%
+REFUND_COMPENSATION                 723     2.3%
+LOST_FOUND                          679     2.1%
+ACCOUNT_ACCESS                      659     2.1%
+SPECIAL_ASSISTANCE                  280     0.9%
+
+--- SAMPLE MESSAGES PER DOMAIN PATTERN ---
+
+[FLIGHT_STATUS]
+  >> Hey @delta thanks for changing my seat without telling me and causing mass confusion.  #DL1251 gave up my window seat fo
+  >> @Delta @824 You?re welcome. I?m unhappy I won?t be able to close the shade to get some rest I planned on getting this fl
+  >> @Delta ticket said comfort+ on our flight last week but we were sat in economy. How can we get a refund?
+  >> @Delta I was recently on a flight and believe I may have lost something. Do you have a group I can talk to?
+  >> @delta just so you know, Jeffrey on flight 3471 from BOS To JFK is working his @$$ off. He?s a keeper
+
+[BOOKING_RESERVATION]
+  >> @Delta If it's "the cost if your ticket" you owe us a couple hundred dollars back
+  >> @Delta Nah b I? booked with somebody else your customer service manager was terrible didn?t help me at all
+  >> @Delta I just purchased Delta Comfort seats for myself and a few friends less than 5 minutes ago and as soon as I hung u
+  >> @Delta Great, that doesn't help one bit. They are asking for an itinary number that I don't have since it didn't get boo
+  >> Hiya @Delta, wondering how I can confirm that my KTN # for TSA Pre ??is present on my upcoming reservation?
+
+[CANCEL_CHANGE]
+  >> .@Delta help your service is down and I need to change my flight !!!! #help
+  >> @Delta *hkc Did you change flight equipment?
+  >> @Delta Never fly delta! I can't change my flight due to an emergency, even though I bought insurance...
+  >> Come on @Delta gate change and delay on DL 199 second time in as many months. This time with no explanation.
+  >> @Delta on 2 hour hold to refund first class sky reward booking due to change in work plans; waited and rep hung up on me
+
+[BAGGAGE_ISSUE]
+  >> @203910 @delta problems in Jacksonville.... Sat on tarmac after landing for over 15 minutes an now it has been 20 minute
+  >> @Delta tried that.They won't deliver my bag tonight because it lands at 10:07. They don't deliver after 10:00. ETA for A
+  >> @Delta Was promised last night my delayed bag would be delivered bet 12-3am to my 24hr doorman in Brooklyn. 10am. No bag
+  >> @Delta Do I not have to pay for checked baggage if I have SkyTeam Elite status?
+  >> @Delta I am in Atlanta, waiting for connection to MSP just got notice that my bag is at the baggage claim not going to m
+
+[REFUND_COMPENSATION]
+  >> @Delta You delayed us getting here, we received no reimbursement for the trouble, now we want to get on an earlier fligh
+  >> @Delta Just giving credit where it's due.  Thank you
+  >> @Delta I booked new flight 2 #Tampa w/ @JetBlue ur service &amp; voucher program wouldn't help me. this won't change any
+  >> @Delta I?d like the 5000 miles and $50 travel voucher we?ve been discussing since Monday... if you?d kindly add them, th
+  >> A @Delta employee got annoyed I paid cash for my bag...he said "Don't you have a credit card???" God forbid anyone use c
+
+[PAYMENT_CHARGE]
+  >> Still hate the lines and boarding markers @Delta Doesn?t speed up anything, improve customer service Or cost less. just 
+  >> @824 Hi there! My wife and I are flying home out of Cancun Int tomorrow at 2:05pm to NYC (JFK) and wondering if departur
+  >> @Delta Hi there! Would you please answer one question or give me the information link? I can't understand how to book th
+  >> @Delta I have a Skymiles credit card, but when I checked in to my flight for tomorrow, it told me I am in zone 2 &amp; I
+  >> @Delta @51485 Now I?m supposed to pay another $175 fee plus trust them w/ my baggage to get home?I?d rather pay extra to
+
+[CHECKIN_BOARDING]
+  >> @Delta So at 40min, a gate agent can see there is a couple traveling together at #1 and 2 for one FC upgrade and give it
+  >> @Delta I was able to complete the check in, the website did not stop me when I stated I do not have a return date.
+  >> Hi @delta I?m currently on your flight DL40 &amp; despite two phone calls and confirmation on check in there?s no vegan 
+  >> #Repost @361675 (get_repost) ??? Big shoutout to @delta for getting me to my gate just in? https://t.co/bC3yFjziho
+  >> @Delta i added my KTN to my profile, but my boarding pass for my flight tomorrow that i just checked in for doesn't show
+
+[SEAT_UPGRADE]
+  >> @Delta I can understand not placing in every seat but if a customer requests it; there should be a way to accommodate
+  >> @Delta Can?t even select and pay for a seat in advance. Super annoying.
+  >> So @AmericanAir ... The gate agent admits that she is going to put a standby customer in the seat next to me... But to p
+  >> thx @Delta 4the upgrade 2 #1stclasswe we made it 2 #MN~ i have so missed this homey &amp; friendly peaceful lil town tha
+  >> @Delta trying to change my seat, available, put in all my credit card details to pay the difference, at the end, you can
+
+[SKYMILES_LOYALTY]
+  >> @Delta I suggest that every time a plane makes passengers late like flight 1338 did on 10/6 u start passing out airline 
+  >> I?m coming to realize after millions of miles that @Delta is as undependable as other airlines. Poor maintenance habits 
+  >> @Delta Thank You! Family trip was cancelled due to Hurricane Damage on FL house and you gave me my miles back.  #greatcu
+  >> @delta .. trying to book SkyMiles and being told to "try Flexible Dates" .. an option that is not given anywhere ... wha
+  >> @Delta BF also has a Skymiles account and he couldn?t even sign in when trying to check in. PLEASE get us seats.
+
+[COMPLAINT_FEEDBACK]
+  >> @Delta I have an issue where a DCA-MXP itinerary is showing up as a multi-city itinerary with different checkins. After 
+  >> @Delta @548479 Racists airline treat our military like crap no respect horrible!!!
+  >> Never had an enjoyable experience flying with @Delta. Absolute worst.
+  >> @Delta U have the worst customer service agents at JFK. People with really disgusting attitude &amp; disrespectful. Look
+  >> @Delta Why bother even replying?  Delta seems to care more about customers disappointed with a dirty seats and late flig
+
+[ACCOUNT_ACCESS]
+  >> @Delta My most recent flight (Oct 13th) isn?t showing up in my SkyMiles account. Can you help?
+  >> @Delta Created Twitter account to thank David Held JFK-T2 for exceptional service! Literally ran to help us make flight.
+  >> @Delta Bummed seat screen malfunctions just before take off- any tips to reset? Flight attendant just shrugged.
+  >> @Delta Yes. I informed the flight attendant on the ground before takeoff that the screens in 3c and 3D were blank and wa
+  >> Why am I not allowed to keep track in my Awardwallet account with @Delta ??? This is not nice.
+
+[SPECIAL_ASSISTANCE]
+  >> @Delta Yes I require assistance hence the tweet . I?ve messaged both airlines
+  >> @Delta military @420370 trying to book flights.  Going on almost an 1.5 hour being helped &amp; then put on hold.  He se
+  >> Hey @Delta I?m trying to reach your customers center without success and I need some assistance here. Could you please h
+  >> @Delta Good day!  I provided medical assistance for a passenger with a medical emergency on Flight 1841 on 10/4.   With 
+  >> @Delta I will stick with the 355 we are on tomorrow. What is the policy regarding my hotel stay?  Thanks for your assist
+
+[LOST_FOUND]
+  >> @Delta Please allow pets to travel in cargo area &amp; extend the waiver fee period for pets in cabin. No Pets Left Behi
+  >> @Delta you can process my drinknourchase in lounge instantly but takes days for flight? Lost plat status on flight due t
+  >> @Delta found my.glasses and called me! Good job FAY red coat!  Thank you.
+  >> @delta if ur going 2 investment in a way 2 make boarding more efficient then u should enforce it! lost out on overhead s
+  >> @Delta Is there a way to find and eTCV (credit voucher) by name and email address if you've lost it? I have no Symikes n
+
+[SCHEDULE_INQUIRY]
+  >> @Delta The system changes earlier this week took away your call center agent ability to build awards by schedule/segment
+  >> @Delta I am on the worst flight ever! JFK to SFO. Should have been six hours, we?re going on 10 now! I just want off of 
+  >> @Delta I've been waiting 12 hours for a flight at LAX. No supervisors came out to inform clients ,UNACCEPTABLE
+  >> @Delta I guess Delta will have to get me to PIT on schedule as contracted
+  >> @Delta if you want me here 3 hours early for a flight make sure you have employees scheduled.
+
+[GENERAL_FEEDBACK]
+  >> @Delta I?m good, but many thanks, just a note for the future. The planes without are just... more civilized.
+  >> Hey thanks @Delta for a great flight yesterday. Like I've never felt so good after an economy flight before. I always ge
+  >> @Delta I?m on flight 1270 to Pensacola! You got my family all in the same row, your flight attendants helped us with our
+  >> @delta Love that you have a flight delays but no compensation. Even late pizza gets you something for your wasted time. 
+  >> As frequent traveller for over 30y, seen a bit. @Delta you have excelled on DL148 flight to AMS on Oct.27 not b'cz you g

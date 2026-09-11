@@ -1,0 +1,20 @@
+{
+  "total_train_customer_messages": 31791,
+  "pseudo_labelled_messages": 20676,
+  "unlabelled_dropped_messages": 11115,
+  "pseudo_label_coverage_percentage": 65.0372747003869,
+  "pseudo_label_distribution": {
+    "SCHEDULE_OR_BOOKING_INQUIRY": 1904,
+    "SKYMILES_OR_LOYALTY": 1140,
+    "COMPLAINT_OR_FEEDBACK": 3843,
+    "SEAT_OR_UPGRADE": 1896,
+    "CHECKIN_OR_BOARDING": 2435,
+    "FLIGHT_STATUS_OR_DELAY": 4114,
+    "PAYMENT_OR_CHARGE_DISPUTE": 797,
+    "REFUND_OR_COMPENSATION": 723,
+    "CANCEL_OR_CHANGE_FLIGHT": 1206,
+    "ACCOUNT_ACCESS": 486,
+    "SPECIAL_ASSISTANCE": 266,
+    "BAGGAGE_ISSUE": 1866
+  }
+}

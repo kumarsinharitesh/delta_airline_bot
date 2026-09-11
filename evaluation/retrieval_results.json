@@ -1,0 +1,19 @@
+{
+  "Same-Intent@1": 0.7347083926031295,
+  "Same-Intent@3": 0.9210526315789473,
+  "Same-Intent@5": 0.9606448553816975,
+  "Support-Response-Availability": 1.0,
+  "Top1-Mean-Similarity": 0.4001442902178081,
+  "Top5-Mean-Similarity": 0.33851375254568783,
+  "Intent-Match-Rate-Top5": 0.7314366998577524,
+  "Resolution-Status-Dist": {
+    "UNKNOWN": 5964,
+    "PARTIALLY_RESOLVED": 838,
+    "RESOLVED": 6541,
+    "REDIRECTED": 7176,
+    "UNRESOLVED": 571
+  },
+  "Total-DEV-Examples": 4218,
+  "Excluded-No-Intent": 2294,
+  "Pseudo-Intent-Coverage": 0.6477272727272727
+}

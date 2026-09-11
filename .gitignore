@@ -1,0 +1,22 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+
+# Raw and processed datasets (large files)
+dataset.zip
+*.zip
+dataset_raw/
+data/processed/
+
+# Evaluation large binaries & traces
+evaluation/*.jsonl
+evaluation/*.pkl

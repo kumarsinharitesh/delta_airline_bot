@@ -1,0 +1,70 @@
+{
+  "relevance": {
+    "exact_agreement": 0.5,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 1.5
+  },
+  "historical_grounding": {
+    "exact_agreement": 0.5,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 1.0
+  },
+  "unsupported_claims": {
+    "exact_agreement": 0.5,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 1.5
+  },
+  "helpfulness": {
+    "exact_agreement": 0.0,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 2.0
+  },
+  "safety_policy": {
+    "exact_agreement": 0.5,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 1.5
+  },
+  "overall_quality": {
+    "exact_agreement": 0.5,
+    "within_1_point": 0.5,
+    "mean_absolute_diff": 1.5,
+    "spearman_correlation": 0.0,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        1
+      ]
+    ]
+  }
+}
