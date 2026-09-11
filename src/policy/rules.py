@@ -119,7 +119,7 @@ def evaluate_policy(
             reasons.append(ReasonCode.SAFE_INFORMATIONAL_REQUEST)
             
         # If action is ALLOW_SAFE_RESPONSE but the evidence is completely empty or irrelevant, 
-        # we might require verification. But for this assignment, we rely on the intent mapping.
+        # we might require verification. But in this implementation, we rely on the intent mapping.
         if action == PolicyAction.ALLOW_SAFE_RESPONSE and retrieved_evidence is None:
              # Just an example of handling evidence, though retrieval might be empty.
              pass

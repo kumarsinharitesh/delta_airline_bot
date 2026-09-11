@@ -237,7 +237,7 @@ When the AI classifies an intent, it produces a **confidence score** (from 0.0 t
 Here is a map of the repository so you know where everything lives and what every file is responsible for:
 
 ```
-Hiver/
+delta_airline_bot/
 ├── configs/
 │   └── intents.yaml               <-- The master definitions of all 13 customer intents
 ├── data/
@@ -326,7 +326,7 @@ When you open `http://localhost:8000` in your web browser:
 ### Step 1: Open Your Terminal
 Open PowerShell or Command Prompt on Windows (or Terminal on Mac/Linux) and navigate to the project directory:
 ```bash
-cd C:\Users\sinha\Desktop\Hiver
+cd delta_airline_bot
 ```
 
 ### Step 2: Install the Few Needed Libraries

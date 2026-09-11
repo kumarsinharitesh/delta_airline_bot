@@ -326,7 +326,7 @@ function insertWelcome() {
       <span class="wchip">🔍 Historical Retrieval</span>
       <span class="wchip">🤖 Sarvam-105B</span>
     </div>
-    <p class="welcome-note">⚠ Research prototype built for the Hiver SDE intern assignment.</p>`;
+    <p class="welcome-note">⚠ Research prototype built for Delta Airlines automated support.</p>`;
   chatWindow.appendChild(w);
 }
 

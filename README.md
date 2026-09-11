@@ -82,6 +82,6 @@ Detailed methodology, automated metrics, and qualitative traces are stored in th
 - **`PROJECT_REPORT.md`**: The complete beginner-friendly report explaining the pipeline, tech stack, and codebase.
 - **`evaluation/final_report.md`**: The final 6-page summary report containing all metrics, failure modes, and limitations.
 - **`evaluation/decision_log.md`**: A log of the 12 most critical engineering decisions made during development.
-- **`evaluation/assignment_checklist.md`**: The exact matrix tracking all Hiver assignment requirements.
+- **`evaluation/assignment_checklist.md`**: The exact matrix tracking all system requirements.
 - **`evaluation/phase*_report.md`**: Granular reports for each individual phase (Intent, Retrieval, Generation, Escalation, etc).
 - **`evaluation/reply_quality_llm_agreement.json`**: The independent LLM-vs-LLM agreement robustness check.
