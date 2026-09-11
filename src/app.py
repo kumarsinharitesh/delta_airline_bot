@@ -49,11 +49,24 @@ STATIC_DIR = ROOT / "static"
 INTENT_PROMPT_TEMPLATE = (ROOT / "src" / "llm" / "prompts" / "sarvam_intent_v1.txt").read_text(encoding="utf-8")
 
 
-def run_pipeline(customer_message: str) -> dict:
+def run_pipeline(customer_message: str, history: list = None) -> dict:
     """
     Runs the full locked pipeline and returns a structured result dict.
     Does NOT expose API keys, chain-of-thought, or reasoning_content.
+    Supports multi-turn conversational context when history is provided.
     """
+    if history is None:
+        history = []
+
+    # Build conversation context from prior turns (last 4 turns)
+    context_parts = []
+    for turn in history[-4:]:
+        role = turn.get("role", "customer").capitalize()
+        text = str(turn.get("text", "")).strip()
+        if text:
+            context_parts.append(f"{role}: {text}")
+    conversation_context = " | ".join(context_parts)
+
     result = {
         "customer_message": customer_message,
         "safety_flags": [],
@@ -79,7 +92,12 @@ def run_pipeline(customer_message: str) -> dict:
             result["safety_flags"].append("EXPLICIT_HUMAN_REQUEST")
 
         # ── Step 2: Intent classification ──────────────────────────────────────
-        intent_prompt = INTENT_PROMPT_TEMPLATE.replace("{{CUSTOMER_MESSAGE}}", customer_message)
+        # Ground classification in conversation context if follow-up
+        if conversation_context:
+            text_to_classify = f"{conversation_context} | CUSTOMER: {customer_message}"
+        else:
+            text_to_classify = f"CUSTOMER: {customer_message}"
+        intent_prompt = INTENT_PROMPT_TEMPLATE + f"\n\nMessage to classify:\n{text_to_classify}\n"
         intent_data = predict_intent(intent_prompt)
         intent = intent_data.get("primary_intent", "AMBIGUOUS_OR_INSUFFICIENT_CONTEXT")
         confidence = float(intent_data.get("confidence", 0.5))
@@ -103,7 +121,7 @@ def run_pipeline(customer_message: str) -> dict:
         # ── Step 5: Generation ────────────────────────────────────────────────
         gen_result = generate_response(
             customer_message=customer_message,
-            conversation_context="",
+            conversation_context=conversation_context,
             intent=intent,
             confidence=confidence,
             policy_result=policy_result,
@@ -194,6 +212,9 @@ class DemoHandler(BaseHTTPRequestHandler):
         try:
             data = json.loads(body)
             message = str(data.get("message", "")).strip()
+            history = data.get("history", [])
+            if not isinstance(history, list):
+                history = []
         except Exception:
             self._send_json({"error": "Invalid JSON body"}, 400)
             return
@@ -206,8 +227,8 @@ class DemoHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Message too long (max 2000 chars)"}, 400)
             return
 
-        log.info("Received message: %.80s...", message)
-        result = run_pipeline(message)
+        log.info("Received message: %.80s... (history turns: %d)", message, len(history))
+        result = run_pipeline(message, history=history)
         self._send_json(result)
 
     def do_OPTIONS(self):

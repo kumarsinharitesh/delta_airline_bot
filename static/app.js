@@ -27,6 +27,7 @@ const pipelineSteps = {
 };
 
 let isLoading = false;
+let conversationHistory = [];
 
 // ── Utils ────────────────────────────────────────────────────────────────────
 function esc(str) {
@@ -261,7 +262,7 @@ async function sendMessage(overrideText) {
       fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, history: conversationHistory }),
       }),
       animatePipeline(),
     ]);
@@ -283,6 +284,14 @@ async function sendMessage(overrideText) {
       };
     } else {
       data = await resp.json();
+    }
+
+    if (data.reply) {
+      conversationHistory.push({ role: 'customer', text: text });
+      conversationHistory.push({ role: 'assistant', text: data.reply });
+      if (conversationHistory.length > 8) {
+        conversationHistory = conversationHistory.slice(-8);
+      }
     }
 
     const group = buildInteractionGroup(text, data);
@@ -334,6 +343,7 @@ clearBtn.addEventListener('click', () => {
   Array.from(chatWindow.children).forEach(c => c.remove());
   insertWelcome();
   resetPipeline();
+  conversationHistory = [];
 });
 
 // ── Events ───────────────────────────────────────────────────────────────────
