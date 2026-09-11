@@ -49,11 +49,11 @@ STATIC_DIR = ROOT / "static"
 INTENT_PROMPT_TEMPLATE = (ROOT / "src" / "llm" / "prompts" / "sarvam_intent_v1.txt").read_text(encoding="utf-8")
 
 
-def run_pipeline(customer_message: str, history: list = None) -> dict:
+def run_pipeline(customer_message: str, history: list = None, attachment: dict = None) -> dict:
     """
     Runs the full locked pipeline and returns a structured result dict.
     Does NOT expose API keys, chain-of-thought, or reasoning_content.
-    Supports multi-turn conversational context when history is provided.
+    Supports multi-turn conversational context and file attachments.
     """
     if history is None:
         history = []
@@ -67,8 +67,17 @@ def run_pipeline(customer_message: str, history: list = None) -> dict:
             context_parts.append(f"{role}: {text}")
     conversation_context = " | ".join(context_parts)
 
+    # If attachment is provided, incorporate its presence into processing text
+    attachment_note = ""
+    if attachment and isinstance(attachment, dict) and attachment.get("name"):
+        attachment_note = f"[Attached file: {attachment.get('name')}]"
+        effective_message = f"{customer_message} {attachment_note}".strip()
+    else:
+        effective_message = customer_message
+
     result = {
         "customer_message": customer_message,
+        "attachment": attachment if (attachment and attachment.get("name")) else None,
         "safety_flags": [],
         "intent": None,
         "intent_confidence": None,
@@ -120,7 +129,7 @@ def run_pipeline(customer_message: str, history: list = None) -> dict:
 
         # ── Step 5: Generation ────────────────────────────────────────────────
         gen_result = generate_response(
-            customer_message=customer_message,
+            customer_message=effective_message,
             conversation_context=conversation_context,
             intent=intent,
             confidence=confidence,
@@ -213,22 +222,26 @@ class DemoHandler(BaseHTTPRequestHandler):
             data = json.loads(body)
             message = str(data.get("message", "")).strip()
             history = data.get("history", [])
+            attachment = data.get("attachment")
             if not isinstance(history, list):
                 history = []
         except Exception:
             self._send_json({"error": "Invalid JSON body"}, 400)
             return
 
-        if not message:
+        if not message and not attachment:
             self._send_json({"error": "Message cannot be empty"}, 400)
             return
+
+        if not message and attachment:
+            message = f"Please check my attached document: {attachment.get('name', 'file')}"
 
         if len(message) > 2000:
             self._send_json({"error": "Message too long (max 2000 chars)"}, 400)
             return
 
-        log.info("Received message: %.80s... (history turns: %d)", message, len(history))
-        result = run_pipeline(message, history=history)
+        log.info("Received message: %.80s... (history: %d, attachment: %s)", message, len(history), bool(attachment))
+        result = run_pipeline(message, history=history, attachment=attachment)
         self._send_json(result)
 
     def do_OPTIONS(self):

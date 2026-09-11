@@ -26,8 +26,13 @@ const pipelineSteps = {
   routing:    document.getElementById('ps-routing'),
 };
 
+const attachBtn         = document.getElementById('attachBtn');
+const fileInput         = document.getElementById('fileInput');
+const attachmentPreview = document.getElementById('attachmentPreview');
+
 let isLoading = false;
 let conversationHistory = [];
+let attachedFile = null;
 
 // ── Utils ────────────────────────────────────────────────────────────────────
 function esc(str) {
@@ -41,6 +46,54 @@ function esc(str) {
 function autoResizeInput() {
   msgInput.style.height = 'auto';
   msgInput.style.height = Math.min(msgInput.scrollHeight, 140) + 'px';
+}
+
+function formatFileSize(bytes) {
+  if (!bytes || bytes < 1024) return (bytes || 0) + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function renderAttachmentPreview() {
+  if (!attachmentPreview) return;
+  if (!attachedFile) {
+    attachmentPreview.style.display = 'none';
+    attachmentPreview.innerHTML = '';
+    if (attachBtn) attachBtn.classList.remove('has-file');
+    return;
+  }
+  attachmentPreview.style.display = 'flex';
+  if (attachBtn) attachBtn.classList.add('has-file');
+  attachmentPreview.innerHTML = `
+    <div class="file-chip">
+      <span>📎</span>
+      <span class="file-chip-name">${esc(attachedFile.name)}</span>
+      <span class="file-chip-size">(${esc(attachedFile.size)})</span>
+      <button class="file-chip-remove" type="button" title="Remove attachment" aria-label="Remove attachment">✕</button>
+    </div>
+  `;
+  const rm = attachmentPreview.querySelector('.file-chip-remove');
+  if (rm) {
+    rm.addEventListener('click', () => {
+      attachedFile = null;
+      if (fileInput) fileInput.value = '';
+      renderAttachmentPreview();
+    });
+  }
+}
+
+if (attachBtn && fileInput) {
+  attachBtn.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+    attachedFile = {
+      name: f.name,
+      size: formatFileSize(f.size),
+      type: f.type || 'document'
+    };
+    renderAttachmentPreview();
+  });
 }
 
 function hideWelcome() {
@@ -88,7 +141,7 @@ async function animatePipeline() {
  * [DECISION CARD]
  *   intent | confidence | policy | retrieval | flags | reason
  */
-function buildInteractionGroup(customerText, data) {
+function buildInteractionGroup(customerText, data, attachment) {
   const group = document.createElement('div');
   group.className = 'interaction-group';
 
@@ -96,13 +149,19 @@ function buildInteractionGroup(customerText, data) {
   const isEscalate = decision === 'ESCALATE';
   const isAuto = decision === 'AUTO_HANDLE';
 
+  const att = attachment || data.attachment;
+  const attHtml = att ? `<div class="bubble-attachment">📎 ${esc(att.name)} <span style="opacity:0.75">(${esc(att.size || 'Attached')})</span></div>` : '';
+
   // ── 1. CUSTOMER row ──
   const customerHtml = `
     <div class="customer-label-row">
       <span class="msg-label">Customer</span>
     </div>
     <div class="customer-row">
-      <div class="msg-bubble user-bubble">${esc(customerText)}</div>
+      <div class="msg-bubble user-bubble">
+        <div class="bubble-text">${esc(customerText)}</div>
+        ${attHtml}
+      </div>
     </div>`;
 
   // ── 2. RESPONSE section ──
@@ -225,19 +284,32 @@ function buildInteractionGroup(customerText, data) {
 }
 
 // ── Loading group ────────────────────────────────────────────────────────────
-function buildLoadingGroup(customerText) {
+function buildLoadingGroup(customerText, attachment) {
   const group = document.createElement('div');
   group.className = 'loading-group';
+  const attHtml = attachment ? `<div class="bubble-attachment">📎 ${esc(attachment.name)} <span style="opacity:0.75">(${esc(attachment.size)})</span></div>` : '';
   group.innerHTML = `
     <div class="customer-label-row"><span class="msg-label">Customer</span></div>
-    <div class="customer-row"><div class="msg-bubble user-bubble">${esc(customerText)}</div></div>
+    <div class="customer-row">
+      <div class="msg-bubble user-bubble">
+        <div class="bubble-text">${esc(customerText)}</div>
+        ${attHtml}
+      </div>
+    </div>
     <div class="loading-bubble"><div class="spinner"></div>Running pipeline…</div>`;
   return group;
 }
 
 // ── Send ─────────────────────────────────────────────────────────────────────
 async function sendMessage(overrideText) {
-  const text = (overrideText ?? msgInput.value).trim();
+  let text = (overrideText ?? msgInput.value).trim();
+  const currentAttachment = attachedFile;
+
+  // If text is empty but a file is attached, provide a default caption
+  if (!text && currentAttachment) {
+    text = `[Attached file: ${currentAttachment.name}]`;
+  }
+
   if (!text || isLoading) return;
 
   isLoading = true;
@@ -245,15 +317,18 @@ async function sendMessage(overrideText) {
   hideWelcome();
   resetPipeline();
 
-  // Clear input
+  // Clear input & preview
   if (!overrideText) {
     msgInput.value = '';
     autoResizeInput();
     charCount.textContent = '0 / 2000';
   }
+  attachedFile = null;
+  if (fileInput) fileInput.value = '';
+  renderAttachmentPreview();
 
   // Append loading group and scroll to it
-  const loadingGroup = buildLoadingGroup(text);
+  const loadingGroup = buildLoadingGroup(text, currentAttachment);
   chatWindow.appendChild(loadingGroup);
   scrollToGroup(loadingGroup);
 
@@ -262,7 +337,11 @@ async function sendMessage(overrideText) {
       fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: conversationHistory }),
+        body: JSON.stringify({
+          message: text,
+          history: conversationHistory,
+          attachment: currentAttachment ? { name: currentAttachment.name, size: currentAttachment.size } : null
+        }),
       }),
       animatePipeline(),
     ]);
@@ -294,7 +373,7 @@ async function sendMessage(overrideText) {
       }
     }
 
-    const group = buildInteractionGroup(text, data);
+    const group = buildInteractionGroup(text, data, currentAttachment);
     chatWindow.appendChild(group);
     scrollToGroup(group);
 
@@ -310,7 +389,7 @@ async function sendMessage(overrideText) {
       retrieval_used: false,
       retrieved_count: 0,
     };
-    const group = buildInteractionGroup(text, data);
+    const group = buildInteractionGroup(text, data, currentAttachment);
     chatWindow.appendChild(group);
     scrollToGroup(group);
   } finally {
@@ -344,13 +423,16 @@ clearBtn.addEventListener('click', () => {
   insertWelcome();
   resetPipeline();
   conversationHistory = [];
+  attachedFile = null;
+  if (fileInput) fileInput.value = '';
+  renderAttachmentPreview();
 });
 
 // ── Events ───────────────────────────────────────────────────────────────────
 sendBtn.addEventListener('click', () => sendMessage());
 
 msgInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+  if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
   }

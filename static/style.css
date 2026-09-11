@@ -388,6 +388,61 @@ body {
 .msg-input::placeholder { color: var(--text-dim); }
 .msg-input:focus { border-color: rgba(79,142,247,0.5); background: rgba(79,142,247,0.03); }
 
+.attach-btn {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s ease;
+}
+.attach-btn:hover {
+  color: var(--accent); border-color: rgba(79,142,247,0.4);
+  background: rgba(79,142,247,0.08);
+}
+.attach-btn.has-file {
+  color: #fff; border-color: var(--accent);
+  background: rgba(79,142,247,0.30);
+  box-shadow: 0 0 10px rgba(79,142,247,0.35);
+}
+
+.attachment-preview {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 8px; animation: fadeUp 0.18s ease;
+}
+.file-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(79,142,247,0.12);
+  border: 1px solid rgba(79,142,247,0.35);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 12px; color: var(--accent);
+  max-width: 100%;
+}
+.file-chip-name {
+  font-weight: 500; max-width: 220px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.file-chip-size { color: var(--text-dim); font-size: 11px; }
+.file-chip-remove {
+  background: none; border: none;
+  color: var(--text-muted); cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 0 2px;
+  display: flex; align-items: center;
+  transition: color 0.12s;
+}
+.file-chip-remove:hover { color: var(--red); }
+
+.bubble-attachment {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 6px; padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 12px; font-weight: 500;
+  word-break: break-all;
+}
+
 .send-btn {
   width: 42px; height: 42px; flex-shrink: 0;
   background: linear-gradient(135deg, var(--accent-dark), var(--accent));
